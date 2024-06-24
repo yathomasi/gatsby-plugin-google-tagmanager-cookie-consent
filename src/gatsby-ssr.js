@@ -91,7 +91,7 @@ exports.onRenderBody = (
     inlineScripts.push(
       <script
         key="plugin-google-tagmanager"
-        data-category="marketing"
+        data-category="analytics"
         dangerouslySetInnerHTML={{
           __html: oneLine`
           ${defaultDataLayerCode}
@@ -111,7 +111,7 @@ exports.onRenderBody = (
     setPreBodyComponents([
       <noscript
         key="plugin-google-tagmanager"
-        data-category="marketing"
+        data-category="analytics"
         dangerouslySetInnerHTML={{
           __html: generateGTMIframe({
             id,
