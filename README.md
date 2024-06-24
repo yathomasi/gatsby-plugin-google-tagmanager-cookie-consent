@@ -1,10 +1,10 @@
-# gatsby-plugin-google-tagmanager
+# gatsby-plugin-google-tagmanager-cookie-consent
 
-Easily add Google Tagmanager to your Gatsby site.
+Easily add Google Tagmanager to your Gatsby site along with cookie consent.
 
 ## Install
 
-`npm install gatsby-plugin-google-tagmanager`
+`npm install gatsby-plugin-google-tagmanager-cookie-consent`
 
 ## How to use
 
@@ -12,9 +12,31 @@ Easily add Google Tagmanager to your Gatsby site.
 // In your gatsby-config.js
 plugins: [
   {
-    resolve: "gatsby-plugin-google-tagmanager",
+    resolve: 'gatsby-plugin-google-tagmanager-cookie-consent',
     options: {
-      id: "YOUR_GOOGLE_TAGMANAGER_ID",
+      cookieConsentConfig: {
+        categories: {
+            necessary: {
+              enabled: true, // this category is enabled by default
+              readOnly: true, // this category cannot be disabled
+            },
+            analytics: {},
+          },
+          language: {
+            default: "en",
+            translations: {
+              en: {
+                consentModal: {
+                  ...
+                },
+                preferencesModal: {
+                  ...
+                },
+              },
+            },
+          },
+      },
+      id: 'YOUR_GOOGLE_TAGMANAGER_ID',
 
       // Include GTM in development.
       //
@@ -25,36 +47,37 @@ plugins: [
       // should be an object or a function that is executed in the browser
       //
       // Defaults to null
-      defaultDataLayer: { platform: "gatsby" },
+      defaultDataLayer: { platform: 'gatsby' },
 
       // Specify optional GTM environment details.
-      gtmAuth: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_AUTH_STRING",
-      gtmPreview: "YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_PREVIEW_NAME",
-      dataLayerName: "YOUR_DATA_LAYER_NAME",
+      gtmAuth: 'YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_AUTH_STRING',
+      gtmPreview: 'YOUR_GOOGLE_TAGMANAGER_ENVIRONMENT_PREVIEW_NAME',
+      dataLayerName: 'YOUR_DATA_LAYER_NAME',
 
       // Name of the event that is triggered
       // on every Gatsby route change.
       //
       // Defaults to gatsby-route-change
-      routeChangeEventName: "YOUR_ROUTE_CHANGE_EVENT_NAME",
+      routeChangeEventName: 'YOUR_ROUTE_CHANGE_EVENT_NAME',
       // Defaults to false
       enableWebVitalsTracking: true,
       // Defaults to https://www.googletagmanager.com
-      selfHostedOrigin: "YOUR_SELF_HOSTED_ORIGIN",
+      selfHostedOrigin: 'YOUR_SELF_HOSTED_ORIGIN',
       // Defaults to gtm.js
-      selfHostedPath: "YOUR_SELF_HOSTED_PATH",
-    },
-  },
+      selfHostedPath: 'YOUR_SELF_HOSTED_PATH'
+    }
+  }
 ]
 ```
 
-If you like to use data at runtime for your defaultDataLayer you can do that by defining it as a function.
+If you like to use data at runtime for your defaultDataLayer you can do that by
+defining it as a function.
 
 ```javascript
 // In your gatsby-config.js
 plugins: [
   {
-    resolve: "gatsby-plugin-google-tagmanager",
+    resolve: 'gatsby-plugin-google-tagmanager-cookie-consent',
     options: {
       // datalayer to be set before GTM is loaded
       // should be a stringified object or object
@@ -62,42 +85,70 @@ plugins: [
       // Defaults to null
       defaultDataLayer: function () {
         return {
-          pageType: window.pageType,
+          pageType: window.pageType
         }
-      },
-    },
-  },
+      }
+    }
+  }
 ]
 ```
 
-This plugin only initiates the tag manager _container_. If you want to use Google Analytics, please also add `gatsby-plugin-google-analytics`.
+This plugin only initiates the tag manager _container_. If you want to use
+Google Analytics, please also add `gatsby-plugin-google-analytics`.
 
-If you want to link analytics use with anything inside the container (for example, a cookie consent manager such as OneTrust), you will need to ensure that the tag manager script comes _before_ the analytics script in your `gatsby-config.js`.
+For detailed information of the available config please reference
+[cookieconsent](https://github.com/orestbida/cookieconsent) or
+[gatsby-plugin-google-tagmanager](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-google-tagmanager)
+directly.
+
+If you want to link analytics use with anything inside the container (for
+example, a cookie consent manager such as OneTrust), you will need to ensure
+that the tag manager script comes _before_ the analytics script in your
+`gatsby-config.js`.
 
 #### Tracking routes
 
-This plugin will fire a new event called `gatsby-route-change` (or as in the `gatsby-config.js` configured `routeChangeEventName`) whenever a route is changed in your Gatsby application. To record this in Google Tag Manager, we will need to add a trigger to the desired tag to listen for the event:
+This plugin will fire a new event called `gatsby-route-change` (or as in the
+`gatsby-config.js` configured `routeChangeEventName`) whenever a route is
+changed in your Gatsby application. To record this in Google Tag Manager, we
+will need to add a trigger to the desired tag to listen for the event:
 
-1. Visit the [Google Tag Manager console](https://tagmanager.google.com/) and click on the workspace for your site.
-2. Navigate to the desired tag using the 'Tags' tab of the menu on the right hand side.
-3. Under "Triggering", click the pencil icon, then the "+" button to add a new trigger.
+1. Visit the [Google Tag Manager console](https://tagmanager.google.com/) and
+   click on the workspace for your site.
+2. Navigate to the desired tag using the 'Tags' tab of the menu on the right
+   hand side.
+3. Under "Triggering", click the pencil icon, then the "+" button to add a new
+   trigger.
 4. In the "Choose a trigger" window, click on the "+" button again.
-5. Choose the trigger type by clicking the pencil button and clicking "Custom event". For event name, enter `gatsby-route-change` (or as in the `gatsby-config.js` configured `routeChangeEventName`).
+5. Choose the trigger type by clicking the pencil button and clicking "Custom
+   event". For event name, enter `gatsby-route-change` (or as in the
+   `gatsby-config.js` configured `routeChangeEventName`).
 
-This tag will now catch every route change in Gatsby, and you can add Google tag services as you wish to it.
+This tag will now catch every route change in Gatsby, and you can add Google tag
+services as you wish to it.
 
 #### Tracking Core Web Vitals
 
-Optimizing for the quality of user experience is key to the long-term success of any site on the web. Capturing Real user metrics (RUM) helps you understand the experience of your user/customer. By setting `enableWebVitalsTracking` to `true`, GTM will get ["core-web-vitals"](https://web.dev/vitals/) events with their values.
+Optimizing for the quality of user experience is key to the long-term success of
+any site on the web. Capturing Real user metrics (RUM) helps you understand the
+experience of your user/customer. By setting `enableWebVitalsTracking` to
+`true`, GTM will get ["core-web-vitals"](https://web.dev/vitals/) events with
+their values.
 
 You can save this data in Google Analytics or any database of your choosing.
 
 We send three metrics:
 
-- **Largest Contentful Paint (LCP)**: measures loading performance. To provide a good user experience, LCP should occur within 2.5 seconds of when the page first starts loading.
-- **First Input Delay (FID)**: measures interactivity. To provide a good user experience, pages should have a FID of 100 milliseconds or less.
-- **Cumulative Layout Shift (CLS)**: measures visual stability. To provide a good user experience, pages should maintain a CLS of 0.1. or less.
+- **Largest Contentful Paint (LCP)**: measures loading performance. To provide a
+  good user experience, LCP should occur within 2.5 seconds of when the page
+  first starts loading.
+- **First Input Delay (FID)**: measures interactivity. To provide a good user
+  experience, pages should have a FID of 100 milliseconds or less.
+- **Cumulative Layout Shift (CLS)**: measures visual stability. To provide a
+  good user experience, pages should maintain a CLS of 0.1. or less.
 
 #### Note
 
-Out of the box this plugin will simply load Google Tag Manager on the initial page/app load. It's up to you to fire tags based on changes in your app. See the above "Tracking routes" section for an example.
+Out of the box this plugin will simply load Google Tag Manager on the initial
+page/app load. It's up to you to fire tags based on changes in your app. See the
+above "Tracking routes" section for an example.

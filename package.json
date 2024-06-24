@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-google-tagmanager-cookie-consent",
   "description": "Gatsby plugin to add google tagmanager onto a site with cookie consent",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Thomas Kunwar",
   "bugs": {
     "url": "https://github.com/yathomasi/gatsby-plugin-google-tagmanager"

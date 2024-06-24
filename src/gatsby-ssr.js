@@ -77,6 +77,7 @@ exports.onRenderBody = (
       inlineScripts.push(
         <script
           key={`gatsby-plugin-google-tagmanager-web-vitals`}
+          data-category="analytics"
           data-gatsby="web-vitals-polyfill"
           dangerouslySetInnerHTML={{
             __html: `
@@ -90,6 +91,7 @@ exports.onRenderBody = (
     inlineScripts.push(
       <script
         key="plugin-google-tagmanager"
+        data-category="marketing"
         dangerouslySetInnerHTML={{
           __html: oneLine`
           ${defaultDataLayerCode}
@@ -109,6 +111,7 @@ exports.onRenderBody = (
     setPreBodyComponents([
       <noscript
         key="plugin-google-tagmanager"
+        data-category="marketing"
         dangerouslySetInnerHTML={{
           __html: generateGTMIframe({
             id,
